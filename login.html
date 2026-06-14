@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>MegaNet Login</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+body{
+font-family:'Poppins',sans-serif;
+background:linear-gradient(135deg,#0066B3,#00BFFF);
+}
+</style>
+</head>
+
+<body class="min-h-screen flex justify-center items-center p-4">
+
+<div class="bg-white w-full max-w-md rounded-2xl shadow-2xl p-8">
+
+<div class="text-center mb-8">
+<img src="assets/logo/meganet-logo.png" class="h-20 mx-auto mb-4">
+<h1 class="text-3xl font-bold text-blue-800">Welcome Back</h1>
+<p class="text-gray-500">Login to your MegaNet account</p>
+</div>
+
+<form id="loginForm" class="space-y-4">
+
+<input
+id="email"
+type="email"
+placeholder="Email Address"
+required
+class="w-full border p-3 rounded-lg">
+
+<input
+id="password"
+type="password"
+placeholder="Password"
+required
+class="w-full border p-3 rounded-lg">
+
+<button
+type="submit"
+class="w-full bg-blue-700 text-white py-3 rounded-lg font-bold">
+Login
+</button>
+
+</form>
+
+<div class="text-center mt-4">
+<a href="#" class="text-blue-700">Forgot Password?</a>
+</div>
+
+<div class="text-center mt-4">
+Don't have an account?
+<a href="register.html" class="text-blue-700 font-bold">
+Register
+</a>
+</div>
+
+<div id="message" class="mt-4 text-center"></div>
+
+</div>
+
+<script type="module">
+
+import { auth } from "./js/firebase-config.js";
+
+import {
+signInWithEmailAndPassword
+}
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+const form = document.getElementById("loginForm");
+
+form.addEventListener("submit", async(e)=>{
+
+e.preventDefault();
+
+const email =
+document.getElementById("email").value;
+
+const password =
+document.getElementById("password").value;
+
+const message =
+document.getElementById("message");
+
+try{
+
+await signInWithEmailAndPassword(
+auth,
+email,
+password
+);
+
+message.innerHTML =
+"<span class='text-green-600 font-bold'>Login Successful</span>";
+
+setTimeout(()=>{
+window.location.href="dashboard.html";
+},1000);
+
+}catch(error){
+
+message.innerHTML =
+`<span class="text-red-600">${error.message}</span>`;
+
+}
+
+});
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>MegaNet - Register</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+body{
+font-family:'Poppins',sans-serif;
+background:linear-gradient(135deg,#0066B3,#00BFFF);
+}
+</style>
+
+</head>
+<body class="min-h-screen flex items-center justify-center p-4">
+
+<div class="bg-white w-full max-w-md rounded-2xl shadow-2xl p-8">
+
+<div class="text-center mb-6">
+<img src="assets/logo/meganet-logo.png" class="h-20 mx-auto mb-4">
+<h1 class="text-3xl font-bold text-blue-800">Create Account</h1>
+<p class="text-gray-500">Join MegaNet Today</p>
+</div>
+
+<form id="registerForm" class="space-y-4">
+
+<input
+id="fullName"
+type="text"
+placeholder="Full Name"
+class="w-full border p-3 rounded-lg"
+required>
+
+<input
+id="username"
+type="text"
+placeholder="Username"
+class="w-full border p-3 rounded-lg"
+required>
+
+<input
+id="phone"
+type="tel"
+placeholder="Phone Number"
+class="w-full border p-3 rounded-lg"
+required>
+
+<input
+id="email"
+type="email"
+placeholder="Email Address"
+class="w-full border p-3 rounded-lg"
+required>
+
+<input
+id="password"
+type="password"
+placeholder="Password"
+class="w-full border p-3 rounded-lg"
+required>
+
+<input
+id="referral"
+type="text"
+placeholder="Referral Code (Optional)"
+class="w-full border p-3 rounded-lg">
+
+<button
+type="submit"
+class="w-full bg-blue-700 text-white py-3 rounded-lg font-bold">
+Create Account
+</button>
+
+</form>
+
+<p class="text-center mt-5">
+Already have an account?
+
+<a href="login.html"
+class="text-blue-700 font-bold">
+Login
+</a>
+</p>
+
+<div id="message" class="mt-4 text-center"></div>
+
+</div>
+
+<script type="module">
+
+import { auth, db } from "./js/firebase-config.js";
+
+import {
+createUserWithEmailAndPassword
+}
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+import {
+doc,
+setDoc,
+serverTimestamp
+}
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const form = document.getElementById("registerForm");
+
+form.addEventListener("submit", async(e)=>{
+
+e.preventDefault();
+
+const fullName =
+document.getElementById("fullName").value;
+
+const username =
+document.getElementById("username").value;
+
+const phone =
+document.getElementById("phone").value;
+
+const email =
+document.getElementById("email").value;
+
+const password =
+document.getElementById("password").value;
+
+const referral =
+document.getElementById("referral").value;
+
+const message =
+document.getElementById("message");
+
+try{
+
+const userCredential =
+await createUserWithEmailAndPassword(
+auth,
+email,
+password
+);
+
+const user =
+userCredential.user;
+
+console.log("writing user to firestore");
+  
+  await setDoc(
+doc(db,"users",user.uid),
+{
+fullName,
+username,
+phone,
+email,
+referralCode: referral,
+walletBalance: 0,
+role: "customer",
+status: "active",
+createdAt: serverTimestamp()
+}
+);
+  
+console.log("firestore write successful");
+  
+message.innerHTML =
+"<span class='text-green-600 font-bold'>Account Created Successfully!</span>";
+
+setTimeout(()=>{
+window.location.href="login.html";
+},2000);
+
+}catch(error){
+
+message.innerHTML =
+`<span class='text-red-600'>${error.message}</span>`;
+
+}
+
+});
+
+</script>
+
+</body>
+</html>
