@@ -8,17 +8,12 @@ import { getFirestore }
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const firebaseConfig = {
-
 apiKey:"AIzaSyAnFW4v6GLdDyCsgMwoySyss4T4Q93hVtQ",
-
 authDomain:"meganet-5be7c.firebaseapp.com",
-
 projectId:"meganet-5be7c",
-
+storageBucket:"meganet-5be7c.appspot.com",
 messagingSenderId:"85379992133",
-
 appId:"1:85379992133:web:8c029bc68389bd2313312c"
-
 };
 
 const app =
