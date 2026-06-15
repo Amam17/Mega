@@ -1,4 +1,3 @@
-// Firebase SDK Imports
 import { initializeApp }
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 
@@ -11,28 +10,32 @@ from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 import { getStorage }
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
 
+const firebaseConfig={
 
-// Firebase Configuration
-const firebaseConfig = {
 apiKey:"AIzaSyAnFW4v6GLdDyCsgMwoySyss4T4Q93hVtQ",
+
 authDomain:"meganet-5be7c.firebaseapp.com",
+
 projectId:"meganet-5be7c",
+
 storageBucket:"meganet-5be7c.firebasestorage.app",
+
 messagingSenderId:"85379992133",
-appId:"1:85379992133:web:8c029bc68389bd2313312c",
-measurementId:"G-N3HMR7QQ90"
+
+appId:"1:85379992133:web:8c029bc68389bd2313312c"
+
 };
 
+const app=
+initializeApp(firebaseConfig);
 
-// Initialize App
-const app = initializeApp(firebaseConfig);
+export const auth=
+getAuth(app);
 
+export const db=
+getFirestore(app);
 
-// Export Services
-export const auth = getAuth(app);
-
-export const db = getFirestore(app);
-
-export const storage = getStorage(app);
+export const storage=
+getStorage(app);
 
 export default app;
