@@ -201,26 +201,34 @@ console.log(
 "Writing to Firestore..."
 );
 
-await setDoc(
-doc(
-db,
-"users",
-user.uid
-),
+await Promise.race([
+
+setDoc(
+doc(db,"users",user.uid),
 {
 fullName,
 username,
 phone,
 email,
-referralCode:
-referral||"",
+referralCode: referral,
 walletBalance:0,
 role:"customer",
-status:"active",
-createdAt:
-serverTimestamp()
+createdAt:new Date()
 }
-);
+),
+
+new Promise((_,reject)=>
+setTimeout(
+()=>reject(
+new Error(
+"Firestore timeout"
+)
+),
+10000
+)
+)
+
+]);
 
 console.log(
 "Firestore success"
