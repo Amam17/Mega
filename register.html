@@ -209,20 +209,22 @@ console.log(
 
 await Promise.race([
 
-setDoc(
+await setDoc(
 doc(db,"users",user.uid),
 {
 fullName,
 username,
 phone,
 email,
-referralCode: referral,
+referralCode: referral || "",
 walletBalance:0,
 role:"customer",
-createdAt:new Date()
+status:"active",
+createdAt: serverTimestamp()
 }
 );
 
+console.log("Firestore success");
 console.log(
 "Firestore success"
 );
