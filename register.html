@@ -221,20 +221,7 @@ walletBalance:0,
 role:"customer",
 createdAt:new Date()
 }
-),
-
-new Promise((_,reject)=>
-setTimeout(
-()=>reject(
-new Error(
-"Firestore timeout"
-)
-),
-10000
-)
-)
-
-]);
+);
 
 console.log(
 "Firestore success"
