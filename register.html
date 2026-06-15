@@ -1,140 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-
-<meta charset="UTF-8">
-
-<meta name="viewport"
-content="width=device-width, initial-scale=1.0">
-
-<title>MegaNet Register</title>
-
-<script src="https://cdn.tailwindcss.com"></script>
-
-<link
-href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
-rel="stylesheet">
-
-<style>
-
-body{
-font-family:Poppins;
-background:linear-gradient(135deg,#0066B3,#00BFFF);
-}
-
-</style>
-
-</head>
-
-<body class="min-h-screen flex items-center justify-center p-4">
-
-<div class="bg-white p-8 rounded-2xl shadow-2xl w-full max-w-md">
-
-<div class="text-center">
-
-<img
-src="assets/logo/meganet-logo.png"
-class="h-20 mx-auto mb-4">
-
-<h1 class="text-3xl font-bold text-blue-800">
-
-Create Account
-
-</h1>
-
-<p class="text-gray-500">
-
-Join MegaNet Today
-
-</p>
-
-</div>
-
-<form
-id="registerForm"
-class="space-y-4 mt-6">
-
-<input
-id="fullName"
-type="text"
-placeholder="Full Name"
-required
-class="w-full p-3 border rounded-lg">
-
-<input
-id="username"
-type="text"
-placeholder="Username"
-required
-class="w-full p-3 border rounded-lg">
-
-<input
-id="phone"
-type="tel"
-placeholder="Phone Number"
-required
-class="w-full p-3 border rounded-lg">
-
-<input
-id="email"
-type="email"
-placeholder="Email Address"
-required
-class="w-full p-3 border rounded-lg">
-
-<input
-id="password"
-type="password"
-placeholder="Password"
-required
-class="w-full p-3 border rounded-lg">
-
-<input
-id="referral"
-type="text"
-placeholder="Referral Code"
-class="w-full p-3 border rounded-lg">
-
-<button
-type="submit"
-class="w-full bg-blue-700 text-white py-3 rounded-lg">
-
-Create Account
-
-</button>
-
-</form>
-
-<p class="text-center mt-5">
-
-Already have account?
-
-<a
-href="login.html"
-class="text-blue-700">
-
-Login
-
-</a>
-
-</p>
-
-<div
-id="message"
-class="text-center mt-4">
-
-</div>
-
-</div>
-
 <script type="module">
 
 import {
 auth,
 db
-}
-from "./js/firebase-config.js";
+} from "./js/firebase-config.js";
 
 import {
 createUserWithEmailAndPassword
@@ -149,65 +18,55 @@ serverTimestamp
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const form =
-document.getElementById(
-"registerForm"
-);
+document.getElementById("registerForm");
 
 const message =
-document.getElementById(
-"message"
-);
+document.getElementById("message");
 
-form.addEventListener(
-"submit",
-async(e)=>{
+form.addEventListener("submit", async(e)=>{
 
 e.preventDefault();
 
 try{
 
-message.innerHTML=
+message.innerHTML =
 "Creating account...";
 
-const fullName=
+const fullName =
 document.getElementById("fullName").value;
 
-const username=
+const username =
 document.getElementById("username").value;
 
-const phone=
+const phone =
 document.getElementById("phone").value;
 
-const email=
+const email =
 document.getElementById("email").value;
 
-const password=
+const password =
 document.getElementById("password").value;
 
-const referral=
+const referral =
 document.getElementById("referral").value;
 
-const result=
+console.log("Starting Auth");
+
+const result =
 await createUserWithEmailAndPassword(
 auth,
 email,
 password
 );
 
-const user=
+const user =
 result.user;
 
-  console.log("Auth Success");
+console.log("Auth Success");
 
-  console.log("Writing to Firestore...");
-  
-  console.log("DB Object:", db);
-  
-console.log(
-"Writing to Firestore..."
-);
+console.log("Writing to Firestore");
 
-await Promise.race([
+console.log("DB:", db);
 
 await setDoc(
 doc(db,"users",user.uid),
@@ -216,25 +75,29 @@ fullName,
 username,
 phone,
 email,
-referralCode: referral || "",
+referralCode:
+referral || "",
+
 walletBalance:0,
+
 role:"customer",
+
 status:"active",
-createdAt: serverTimestamp()
+
+createdAt:
+serverTimestamp()
+
 }
 );
 
 console.log("Firestore success");
-console.log(
-"Firestore success"
-);
 
-message.innerHTML=
+message.innerHTML =
 "<span class='text-green-600'>Account Created Successfully</span>";
 
 setTimeout(()=>{
 
-window.location.href=
+window.location.href =
 "login.html";
 
 },1500);
@@ -243,16 +106,11 @@ window.location.href=
 
 console.error(error);
 
-message.innerHTML=
+message.innerHTML =
 `<span class="text-red-600">${error.message}</span>`;
 
 }
 
-}
-
-);
+});
 
 </script>
-
-</body>
-</html>
