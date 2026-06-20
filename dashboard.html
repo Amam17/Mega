@@ -195,66 +195,99 @@ No transactions yet
 
 <script type="module">
 
-import { auth, db } from "./js/firebase-config.js";
-
-import {
-onAuthStateChanged,
-signOut
-}
-from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-
-import {
-doc,
-getDoc
-}
-from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { supabase } from "./js/supabase.js";
 
 const welcomeName =
-document.getElementById("welcomeName");
+document.getElementById(
+"welcomeName"
+);
 
 const walletBalance =
-document.getElementById("walletBalance");
+document.getElementById(
+"walletBalance"
+);
 
-onAuthStateChanged(auth, async(user)=>{
+/* CHECK SESSION */
 
-if(!user){
+const {
+data:{session}
+}
+=
+await supabase.auth.getSession();
 
-window.location.href="login.html";
-return;
+if(!session){
+
+window.location.href=
+"login.html";
+
+throw new Error(
+"No Session"
+);
 
 }
 
-const userRef =
-doc(db,"users",user.uid);
+/* GET PROFILE */
 
-const userSnap =
-await getDoc(userRef);
+const user =
+session.user;
 
-if(userSnap.exists()){
+const {
+data,
+error
+}
+=
+await supabase
+.from(
+"profiles"
+)
+.select("*")
+.eq(
+"id",
+user.id
+)
+.single();
 
-const userData =
-userSnap.data();
+if(error){
+
+console.error(error);
+
+}
+
+/* DISPLAY */
+
+if(data){
 
 welcomeName.innerHTML =
-`Welcome, ${userData.fullName}`;
+`Welcome, ${data.full_name}`;
 
 walletBalance.innerHTML =
-`₦${userData.walletBalance || 0}`;
+`₦${Number(
+data.wallet_balance || 0
+).toLocaleString()}`;
 
 }
 
-});
+/* LOGOUT */
 
-document.getElementById("logoutBtn")
-.addEventListener("click",async()=>{
+document
+.getElementById(
+"logoutBtn"
+)
+.addEventListener(
+"click",
+async()=>{
 
-await signOut(auth);
+await supabase
+.auth
+.signOut();
 
-window.location.href="login.html";
+window.location.href=
+"login.html";
 
-});
+}
+
+);
 
 </script>
-
 </body>
 </html>
