@@ -67,55 +67,5 @@ Register
 
 </div>
 
-<script type="module">
-
-import { auth } from "./js/firebase-config.js";
-
-import {
-signInWithEmailAndPassword
-}
-from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-
-const form = document.getElementById("loginForm");
-
-form.addEventListener("submit", async(e)=>{
-
-e.preventDefault();
-
-const email =
-document.getElementById("email").value;
-
-const password =
-document.getElementById("password").value;
-
-const message =
-document.getElementById("message");
-
-try{
-
-await signInWithEmailAndPassword(
-auth,
-email,
-password
-);
-
-message.innerHTML =
-"<span class='text-green-600 font-bold'>Login Successful</span>";
-
-setTimeout(()=>{
-window.location.href="dashboard.html";
-},1000);
-
-}catch(error){
-
-message.innerHTML =
-`<span class="text-red-600">${error.message}</span>`;
-
-}
-
-});
-
-</script>
-
 </body>
 </html>
