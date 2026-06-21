@@ -1,10 +1,14 @@
 import { supabase } from "./supabase.js";
 
 const form =
-document.getElementById("loginForm");
+document.getElementById(
+"loginForm"
+);
 
 const message =
-document.getElementById("message");
+document.getElementById(
+"message"
+);
 
 form.addEventListener(
 "submit",
@@ -14,24 +18,32 @@ e.preventDefault();
 
 try{
 
-message.innerHTML=
-"Signing in...";
+message.innerHTML =
+"Logging in...";
 
 const email =
-document.getElementById(
+document
+.getElementById(
 "email"
-).value.trim();
+)
+.value
+.trim();
 
 const password =
-document.getElementById(
+document
+.getElementById(
 "password"
-).value;
+)
+.value;
 
 const {
+data,
 error
 }
 =
-await supabase.auth.signInWithPassword({
+await supabase
+.auth
+.signInWithPassword({
 
 email,
 password
@@ -44,12 +56,12 @@ throw error;
 
 }
 
-message.innerHTML=
+message.innerHTML =
 "<span class='text-green-600'>Login Successful</span>";
 
 setTimeout(()=>{
 
-window.location.href=
+window.location.href =
 "dashboard.html";
 
 },1000);
@@ -58,8 +70,8 @@ window.location.href=
 
 console.error(error);
 
-message.innerHTML=
-`<span class='text-red-600'>${error.message}</span>`;
+message.innerHTML =
+`<span class="text-red-600">${error.message}</span>`;
 
 }
 
